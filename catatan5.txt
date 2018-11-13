@@ -1,0 +1,34 @@
+
+CREATE DATABASE akademik1;
+USE akademik1;
+
+CREATE TABLE IF NOT EXISTS mhs(
+	nim char(12) not null,
+    nama varchar(30) not null,
+    kode_agm char(1) not null,
+    kode_ps char(4)
+);
+
+CREATE TABLE IF NOT EXISTS Agama(
+	kode_ag char(1) not null,
+    ket varchar(10)
+);
+
+CREATE TABLE IF NOT EXISTS programStudi(
+	kode_prog char(4) not null,
+    ket varchar(30)
+);
+
+ALTER TABLE mhs
+	ADD PRIMARY KEY (nim);
+ALTER TABLE agama
+	ADD PRIMARY KEY (kode_ag);
+ALTER TABLE programStudi
+	ADD PRIMARY KEY (kode_prog);
+    
+ALTER TABLE mhs
+	ADD FOREIGN KEY (kode_agm) REFERENCES agama(kode_ag)
+    	ON DELETE RESTRICT ON UPDATE CASCADE,
+    ADD FOREIGN KEY (kode_ps) REFERENCES programStudi(kode_prog)
+    	ON DELETE RESTRICT ON UPDATE CASCADE
+    
