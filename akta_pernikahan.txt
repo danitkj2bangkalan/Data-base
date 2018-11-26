@@ -1,0 +1,151 @@
+CREATE DATABASE perancangan_AKTAPERNIKAHAN;
+USE perancangan_AKTAPERNIKAHAN;
+
+CREATE TABLE IF NOT EXISTS pengguna (
+	kode_user char (12) NOT null,
+    pass varchar (8) NOT null,
+    nama_pengguna char (32) NOT null
+);
+CREATE TABLE IF NOT EXISTS departement (
+	kode_dep char (12) NOT null,
+    alamat varchar (40) NOT null,
+    ket varchar (32) NOT null
+);
+CREATE TABLE IF NOT EXISTS pejabat (
+	nip char (12) NOT null,
+    nama_pejabat char (32)NOT null,
+    kode_dept char (12) NOT null
+);
+CREATE TABLE IF NOT EXISTS agama (
+	kode_ag char (1) NOT null,
+    ket char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS jeniskelamin (
+    kode_jk char (8) NOT null,
+    ket char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS hubungan_keluarga (
+    kode_hubungan_keluarga char (8) NOT null,
+    ket char (32)NOT null
+);
+CREATE TABLE IF NOT EXISTS pendidikan (
+    kode_pendidikan char (8) NOT null,
+    ket varchar (32)NOT null
+);
+CREATE TABLE IF NOT EXISTS pekerjaan (
+    kode_pekerjaan char (8) NOT null,
+    ket char (32)NOT null
+);
+CREATE TABLE IF NOT EXISTS status_perkawinan (
+	kode_status_perkawinan char (8) NOT null,
+    ket char (32)NOT null
+);
+CREATE TABLE IF NOT EXISTS kewarganegaraan (
+	kode_kewarganegaraan char (8) NOT null,
+    ket char (32)NOT null
+);
+CREATE TABLE IF NOT EXISTS provinsi (
+	kode_provinsi char (8) NOT null,
+    ket char (12)NOT null
+);
+CREATE TABLE IF NOT EXISTS kabupaten (
+	kode_kabupaten char (8) NOT null,
+    ket char (32)NOT null,
+    kode_prov char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS kecamatan (
+	kode_kecamatan char (8) NOT null,
+    ket char (32)NOT null,
+    kode_kab char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS kelurahan (
+	kode_status_perkawinan char (8) NOT null,
+    kode_pos char (5) NOT null,
+    ket char (32)NOT null,
+    kode_kelurahan char (8) NOT null,
+    kode_kec char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS tempat_pernikahan (
+	kode_tempat_pernikahan char (8) NOT null,
+    alamat varchar (32)NOT null,
+    ket char (32) NOT null,
+    kode_kabu char (8) NOT null
+);
+CREATE TABLE IF NOT EXISTS pemuka_agama (
+	kode_pemuka_agama char (8) NOT null,
+    nama char (32)NOT null,
+    gelar char (12) NOT null,
+    kode_jenis_kelamin char (1) not null
+);
+CREATE TABLE IF NOT EXISTS pasangan (
+	kode_pasangan char (8) NOT null,
+    nama char (32)NOT null,
+    gelar char (12) NOT null,
+    kode_sex char (1) NOT null
+);
+CREATE TABLE IF NOT EXISTS akta_pernikahan (
+	nomor_akta varchar (15) NOT null,
+    nik varchar (15) NOT null,
+    tanggal_dikeluarkan date not null,
+    tempat_dikeluarkan char (32),
+    kode_admin char (12) NOT null,
+    nip_tt char (12) NOT null
+);
+
+ALTER TABLE pengguna
+	ADD PRIMARY KEY (kode_user);
+ALTER TABLE departement 
+	ADD PRIMARY KEY (kode_dep);
+ALTER TABLE pejabat 
+	ADD PRIMARY KEY (nip);
+ALTER TABLE agama 
+	ADD PRIMARY KEY (kode_ag);
+ALTER TABLE jeniskelamin 
+	ADD PRIMARY KEY (kode_jk);
+ALTER TABLE hubungan_keluarga 
+	ADD PRIMARY KEY (kode_hubungan_keluarga);
+ALTER TABLE pendidikan 
+	ADD PRIMARY KEY (kode_pendidikan);
+ALTER TABLE pekerjaan 
+	ADD PRIMARY KEY (kode_pekerjaan);
+ALTER TABLE status_perkawinan 
+	ADD PRIMARY KEY (kode_status_perkawinan);
+ALTER TABLE kewarganegaraan 
+	ADD PRIMARY KEY (kode_kewarganegaraan);
+ALTER TABLE provinsi 
+	ADD PRIMARY KEY (kode_provinsi);
+ALTER TABLE kabupaten
+	ADD PRIMARY KEY (kode_kabupaten);
+ALTER TABLE kecamatan 
+	ADD PRIMARY KEY (kode_kecamatan);
+ALTER TABLE kelurahan 
+	ADD PRIMARY KEY (kode_kelurahan);
+ALTER TABLE tempat_pernikahan 
+	ADD PRIMARY KEY (kode_tempat_pernikahan);
+ALTER TABLE pemuka_agama 
+	ADD PRIMARY KEY (kode_pemuka_agama);
+ALTER TABLE pasangan 
+	ADD PRIMARY KEY (kode_pasangan);
+ALTER TABLE akta_pernikahan 
+	ADD PRIMARY KEY (nomor_akta);
+    
+ALTER TABLE pejabat
+	ADD FOREIGN KEY (kode_dept) REFERENCES departement(kode_dep) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE kabupaten
+	ADD FOREIGN KEY (kode_prov) REFERENCES provinsi(kode_provinsi) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE kecamatan
+	ADD FOREIGN KEY (kode_kab) REFERENCES kabupaten(kode_kabupaten) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE kelurahan
+	ADD FOREIGN KEY (kode_kec) REFERENCES kecamatan(kode_kecamatan) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE tempat_pernikahan
+	ADD FOREIGN KEY (kode_kabu)REFERENCES kabupaten(kode_kabupaten) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE pemuka_agama
+	ADD FOREIGN KEY (kode_jenis_kelamin) REFERENCES jeniskelamin(kode_jk) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE pasangan 
+	ADD FOREIGN KEY (kode_sex) REFERENCES jeniskelamin(kode_jk) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE akta_pernikahan
+	ADD FOREIGN KEY (kode_admin) REFERENCES pengguna(kode_user) ON DELETE RESTRICT ON UPDATE CASCADE,
+    ADD FOREIGN KEY (nip_tt) REFERENCES pejabat(nip) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+    
+    
